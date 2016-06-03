@@ -23,9 +23,6 @@
 #else
 #include <unistd.h>
 #endif
-#if !defined(_MSC_VER)
-#include <pthread.h>
-#endif
 #include <stdarg.h>
 #include "swift/Runtime/Debug.h"
 #include "swift/Runtime/Mutex.h"
