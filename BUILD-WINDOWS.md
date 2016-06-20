@@ -44,6 +44,7 @@ Install pkg-config_0.26-1
 		C:\pkg-config\bin\pkg-config.exe
 		C:\pkg-config\bin\libglib-2.0-0.dll
 		C:\pkg-config\bin\intl.dll
+  3) set PKG_CONFIG_PATH=c:/pkg-config/conf
   (referenced: http://stackoverflow.com/questions/1710922/how-to-install-pkg-config-in-windows)
 
 Install icu4c-56
@@ -110,14 +111,14 @@ Copy %WORKDIR%/swift/misc/Windows-Clang.cmake in repository
 Build cmark
 -----------
 ```
-mkdir %WORKDIR%\build\NinjaMSVC\cmark
-cd %WORKDIR%\build\NinjaMSVC\cmark
-cmake -G "Visual Studio 14 2015 Win64" -D CMAKE_BUILD_TYPE=RELEASE ..\..\..\cmark
+mkdir %WORKDIR%\build\NinjaMinGW\cmark
+cd %WORKDIR%\build\NinjaMinGW\cmark
+cmake -G Ninja -D CMAKE_BUILD_TYPE=RELEASE ..\..\..\cmark
   (You may ignore the following messages)
     -- Could NOT find PythonInterp: Found unsuitable version "2.7.11", but required is at least "3" (found C:/Python27/python.exe)
     *** A python 3 interpreter is required to run the spec tests.
     
-"c:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" /p:Configuration=Release ALL_BUILD.vcxproj 
+ninja
 ```
 
 Build clang
@@ -131,9 +132,9 @@ mklink /d clang ..\..\clang
 
 mkdir %WORKDIR%\build\NinjaMSVC\llvm
 cd %WORKDIR%\build\NinjaMSVC\llvm
-cmake -G "Visual Studio 14 2015 Win64" -D CMAKE_BUILD_TYPE=RELEASE ..\..\..\llvm
+cmake -G Ninja -D CMAKE_BUILD_TYPE=RELEASE ..\..\..\llvm
 
-"c:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" /p:Configuration=Release ALL_BUILD.vcxproj 
+ninja
 ```
 
 Build Swift
@@ -151,16 +152,16 @@ Following DLL's must be copied to %WORKDIR%/build/NinjaMSVC/swift/bin
   icuin56.dll
   icuuc56.dll
 
-cd %WORKDIR%\build\NinjaMSVC\swift
+cd %WORKDIR%\build\NinjaMinGW\swift
 
-cmake -G Ninja ..\..\..\swift -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang  -DCMAKE_CXX_COMPILER=clang -DLIBXML2_LIBRARIES=%WORKDIR%\libxml2\lib\libxml2.a  -DLIBXML2_INCLUDE_DIR=%WORKDIR%\libxml2\include\libxml2  -DPKG_CONFIG_EXECUTABLE=c:\pkg-config\bin\pkg-config.exe -DICU_UC_INCLUDE_DIR=%WORKDIR%\icu\include -DICU_UC_LIBRARY=%WORKDIR%\icu\lib64\icuuc.lib -DICU_I18N_INCLUDE_DIR=%WORKDIR%\icu\include -DICU_I18N_LIBRARY=%WORKDIR%\icu\lib64\icuin.lib -DSWIFT_INCLUDE_DOCS=FALSE -DSWIFT_PATH_TO_CMARK_BUILD=%WORKDIR%\build\NinjaMSVC\cmark -DSWIFT_PATH_TO_CMARK_SOURCE=%WORKDIR%\cmark  -DCMAKE_CXX_FLAGS="-fms-extensions -fms-compatibility-version=19 -frtti " ..\..\..\swift
+cmake -G Ninja ..\..\..\swift -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang  -DCMAKE_CXX_COMPILER=clang -DLIBXML2_LIBRARIES=%WORKDIR%\libxml2\lib\libxml2.a  -DLIBXML2_INCLUDE_DIR=%WORKDIR%\libxml2\include\libxml2  -DPKG_CONFIG_EXECUTABLE=c:\pkg-config\bin\pkg-config.exe -DICU_UC_INCLUDE_DIR=%WORKDIR%\icu\include -DICU_UC_LIBRARY=%WORKDIR%\icu\lib64\icuuc.lib -DICU_I18N_INCLUDE_DIR=%WORKDIR%\icu\include -DICU_I18N_LIBRARY=%WORKDIR%\icu\lib64\icuin.lib -DSWIFT_INCLUDE_DOCS=FALSE -DSWIFT_PATH_TO_CMARK_BUILD=%WORKDIR%\build\NinjaMSVC\cmark -DSWIFT_PATH_TO_CMARK_SOURCE=%WORKDIR%\cmark  ..\..\..\swift
 
 (In Cygwin64 Terminal)
 // change to the same directory
 //   export WORKDIR=<Your working directory>
 //   cd $WORKDIR/build/NinjaMSVC/swift
 sed	-e 's;libclang\([^.]*\).a;clang\1.lib;g' \
-	-e 's;swift\\libcmark.a;build\\NinjaMSVC\\cmark\\src\\Release\\cmark.lib;g' \
+	-e 's;swift/libcmark.a;build/NinjaMinGW/cmark/src/libcmark.a;g' \
 	-e 's;swift swiftc;swift.exe swiftc.exe;' \
 	-e 's;swift swift-autolink-extract;swift.exe swift-autolink-extract.exe;' \
 	-e 's;-fno-rtti ;;' \
