@@ -170,7 +170,7 @@ sed -e 's;swift/libcmark.a;build/NinjaMinGW/cmark/src/libcmark.a;g' \
 Run
   cp gyb.exe %WORKDIR%\swift\utils\gyb.exe
   cp -r C:\mingw64\x86_64-w64-mingw32-w64-mingw32  C:\msys64\usr
-  cp libgcc. libgcc_eh.a C:\msys64\usr\x86_64-w64-mingw32\lib
+  cp libgcc.a libgcc_eh.a C:\msys64\usr\x86_64-w64-mingw32\lib
 
   cd %WORKDIR%\build\NinjaMinGW\swift
   // Building swift.exe, libswiftRuntime.a, libswiftStdlibStubs.a
