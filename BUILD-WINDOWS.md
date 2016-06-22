@@ -161,7 +161,7 @@ cmake -G Ninja ..\..\..\swift -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clan
 (In Cygwin64 Terminal)
 // change to the same directory
 //   export WORKDIR=<Your working directory>
-//   cd $WORKDIR/build/NinjaMSVC/swift
+//   cd $WORKDIR/build/NinjaMinGW/swift
 sed -e 's;swift/libcmark.a;build/NinjaMinGW/cmark/src/libcmark.a;g' \
     -e 's;-target x86_64-pc-windows-msvc ;;' \
     -e 's;-ledit ;;g' \
